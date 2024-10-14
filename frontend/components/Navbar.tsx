@@ -42,8 +42,8 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+    <header className="bg-transparent text-white shadow-lg">
+      <div className="max-w-screen-2xl mx-auto px-4 py-4 flex justify-between items-center">
         <div className="text-2xl font-bold">Logo</div>
         <nav className="hidden md:flex space-x-4">
           {menuItems.map((item, index) => (
