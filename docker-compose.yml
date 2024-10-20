@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  frontend:
+    container_name: nextjs_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://backend:8080  # URL of your Rust backend service
+
+  backend:
+    container_name: rust_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db  # Ensure the database is up before the backend starts
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/file_share_db  # Connects to the specified database
+
+  db:
+    container_name: postgres_db
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres       # PostgreSQL username
+      POSTGRES_PASSWORD: password    # PostgreSQL password
+      POSTGRES_DB: file_share_db    # Creates this database
+    ports:
+      - '5432:5432'                 # Exposes PostgreSQL port
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist data
+
+volumes:
+  postgres_data:  # Volume for PostgreSQL data
